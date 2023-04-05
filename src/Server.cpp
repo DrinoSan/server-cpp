@@ -53,7 +53,8 @@ int Server_t::initServer()
     }
 
     // Waiting for client
-    struct sockaddr_storage client_addr = {};
+    // sockaddr_storage needed if i want to print from whom i got a connection
+    struct sockaddr_in client_addr = {};
     socklen_t socklen = sizeof(client_addr);
 
     while (true)
