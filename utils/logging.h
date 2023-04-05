@@ -4,11 +4,11 @@
 //---------------------------------------------------------------------
 inline void err(std::string msg)
 {
-    std::cerr << msg << '\n';
+    std::cerr << "[ERROR] " << msg << '\n';
 }
 
 //---------------------------------------------------------------------
 inline void msg(std::string msg)
 {
-    std::cerr << msg << '\n';
+    std::cerr << "[NOTICE] " << msg << '\n';
 }
