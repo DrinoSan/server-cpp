@@ -68,6 +68,9 @@ int Server_t::initServer()
         char rbuf[100];
         read(connfd, rbuf, sizeof(rbuf));
         msg(rbuf);
+
+        const char wbuf[19] = "Hello from Server!";
+        write(connfd, wbuf, sizeof(wbuf));
         close(connfd);
     }
 }
