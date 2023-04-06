@@ -6,7 +6,7 @@ project(server-cpp)
 set(CMAKE_CXX_STANDARD 11)
 
 ## Use file globbing to find all source files in the src directory
-file(GLOB SOURCES "src/*.cpp" "src/utils/*.cpp" "src/utils/*.h")
+file(GLOB SOURCES "src/*.cpp" "src/utils/*.cpp")
 
 # Add your source files here
 add_executable(server-cpp ${SOURCES})

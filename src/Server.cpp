@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
-
 // Porject Headers
 #include "Server.h"
 #include "utils/logging.h"
@@ -27,13 +26,13 @@ int Server_t::initServer()
     int fd;
     if ((fd = socket(PF_INET, SOCK_STREAM, 0)) < 0)
     {
-        err("Failed to create Socket FD");
+        traceError("Failed to create Socket FD");
     }
 
     int opt = 1;
     if (setsockopt(fd, SOL_SOCKET, SO_REUSEPORT, &opt, sizeof(opt)))
     {
-        err("Failed setsockopt");
+        traceError("Failed setsockopt");
     }
 
     struct sockaddr_in addr = {};
@@ -44,12 +43,12 @@ int Server_t::initServer()
     int rv;
     if ((rv = bind(fd, (const sockaddr *)&addr, sizeof(addr))))
     {
-        err("Failed binding to socket!");
+        traceError("Failed binding to socket!");
     }
 
     if ((rv = listen(fd, 5)))
     {
-        err("Failed listening");
+        traceError("Failed listening");
     }
 
     // Waiting for client
@@ -62,16 +61,19 @@ int Server_t::initServer()
         int connfd = accept(fd, (struct sockaddr *)&client_addr, &socklen);
         if (connfd < 0)
         {
-            err("accept() error");
+            traceError("accept() error");
             return -1;
         }
 
         char rbuf[100];
         read(connfd, rbuf, sizeof(rbuf));
-        msg(rbuf);
+        traceNotice(rbuf);
 
         const char wbuf[19] = "Hello from Server!";
         write(connfd, wbuf, sizeof(wbuf));
+        memset(rbuf, '\0', sizeof(rbuf));
+        read(connfd, rbuf, sizeof(rbuf));
+        traceNotice(rbuf);
         close(connfd);
     }
 }

@@ -6,5 +6,6 @@ s.sendall("Hello from client".encode())
 
 msg = s.recv(19)
 print(msg.decode())
+s.sendall("Ah Hi server".encode())
 
 s.close()                     # Close the socket when done
