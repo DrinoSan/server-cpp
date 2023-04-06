@@ -62,3 +62,6 @@ _deps
 # UML
 UML
 .DS_Store
+
+#clangd
+.cache

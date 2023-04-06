@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.10)
 project(server-cpp)
 
 # Set C++ standard
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 ## Use file globbing to find all source files in the src directory
 file(GLOB SOURCES "src/*.cpp" "src/utils/*.cpp")
