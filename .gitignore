@@ -57,3 +57,8 @@ _deps
 # Built Visual Studio Code Extensions
 *.vsix
 .vscode/settings.json
+
+
+# UML
+UML
+.DS_Store
