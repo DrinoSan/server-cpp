@@ -3,7 +3,7 @@
 #include <unistd.h>
 
 // Project Headers
-#include "utils/logging.h"
+#include "src/utils/logging.h"
 #include "src/Server.h"
 
 int main()
