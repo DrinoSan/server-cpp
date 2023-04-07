@@ -1,7 +1,9 @@
+// System Headers
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <string.h>
 #include <string>
+#include <sys/_endian.h>
 #include <sys/fcntl.h>
 #include <sys/socket.h>
 #include <unistd.h>
@@ -41,6 +43,23 @@ void Server_t::set_non_blocking(int fd) {
 }
 
 //---------------------------------------------------------------------
+void Server_t::getClientIP(struct sockaddr_storage addr) {
+  // I am currently only using IPv4 but we make it work also for IPv6
+  char ipStr[INET6_ADDRSTRLEN];
+
+  if( addr.ss_family == AF_INET ) {
+    struct sockaddr_in* s = (struct sockaddr_in*)&addr;
+    port = ntohs(s->sin_port);
+    inet_ntop(AF_INET, &s->sin_addr, ipStr, sizeof(ipStr));
+  }
+  else {
+    // TODO: IPv6
+  }
+
+  traceNotice("Got Connection from: " + std::string(ipStr));
+}
+
+//---------------------------------------------------------------------
 int Server_t::initServer() {
   int fd;
   if ((fd = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
@@ -68,7 +87,7 @@ int Server_t::initServer() {
 
   // Waiting for client
   // sockaddr_storage needed if i want to print from whom i got a connection
-  struct sockaddr_in client_addr = {};
+  struct sockaddr_storage client_addr = {};
   socklen_t socklen = sizeof(client_addr);
 
   while (true) {
@@ -78,6 +97,8 @@ int Server_t::initServer() {
       return -1;
     }
 
+    getClientIP(client_addr);
+
     set_non_blocking(connfd);
 
     char rbuf[1000];
@@ -86,10 +107,6 @@ int Server_t::initServer() {
 
     const char wbuf[19] = "Hello from Server!";
     write(connfd, wbuf, sizeof(wbuf));
-    memset(rbuf, '\0', sizeof(rbuf));
-    sleep(5);
-    readAll(connfd, rbuf, sizeof(rbuf));
-    traceNotice(rbuf);
     close(connfd);
   }
 }
